@@ -596,14 +596,16 @@ class OpenClawSession(context: Context) : VoiceInteractionSession(context),
     }
 
     private fun playFillerPhrase() {
-        val phrase = context.getString(R.string.filler_ok)
-        
         stopAuxiliarySpeech()
+        val fillerCache = com.openclaw.assistant.speech.FillerPhraseCache.getInstance(context)
         var playbackJob: Job? = null
         playbackJob = scope.launch {
             try {
-                // 相槌は progress 監視せずに即座に発話だけさせる
-                ttsManager.speakWithProgress(phrase).collect {} 
+                // Try cached audio first (instant), fall back to live TTS
+                if (!fillerCache.playRandomFiller()) {
+                    val phrase = fillerCache.fillerPhrases.random()
+                    ttsManager.speakWithProgress(phrase).collect {}
+                }
             } catch (_: CancellationException) {
             } catch (e: Exception) {
                 Log.w(TAG, "Failed to play filler phrase", e)
@@ -617,18 +619,16 @@ class OpenClawSession(context: Context) : VoiceInteractionSession(context),
     }
 
     private fun playWaitPhrase() {
-        val waitPhrases = listOf(
-            context.getString(R.string.wait_phrase_let_me_think),
-            context.getString(R.string.wait_phrase_one_moment),
-            context.getString(R.string.wait_phrase_checking)
-        )
-        val phrase = waitPhrases.random()
-        
         stopAuxiliarySpeech()
+        val fillerCache = com.openclaw.assistant.speech.FillerPhraseCache.getInstance(context)
         var playbackJob: Job? = null
         playbackJob = scope.launch {
             try {
-                ttsManager.speakWithProgress(phrase).collect {}
+                // Try cached audio first (instant), fall back to live TTS
+                if (!fillerCache.playRandomWaitPhrase()) {
+                    val phrase = fillerCache.waitPhrases.random()
+                    ttsManager.speakWithProgress(phrase).collect {}
+                }
             } catch (_: CancellationException) {
             } catch (e: Exception) {
                 Log.w(TAG, "Failed to play wait phrase", e)

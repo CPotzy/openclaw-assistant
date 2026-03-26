@@ -63,28 +63,37 @@ object ElevenLabsVoiceOptions {
     
     // Actual ElevenLabs Voice IDs from API
     val VOICES = listOf(
-        VoiceOption("", "デフォルト（API設定依存）", "API設定で指定されたデフォルト音声を使用"),
-        VoiceOption("pNInz6obpgDQGcFmaJgB", "Adam", "力強い男性"),
-        VoiceOption("EXAVITQu4vr4xnSDxMaL", "Bella", "明るいプロフェッショナル女性"),
-        VoiceOption("nPczCjzI2devNBz1zQrb", "Brian", "深みのある安心感のある男性"),
-        VoiceOption("IKne3meq5aSn9XLyUdCD", "Charlie", "低めで自信に満ちた男性"),
-        VoiceOption("SOYHLrjzK2X1ezoPC6cr", "Harry", "激しい戦士系男性"),
-        VoiceOption("XrExE9yKIg1WjnnlVkGX", "Matilda", "知識豊富なプロフェッショナル女性"),
-        VoiceOption("cgSgspJ2msm6clMCkdW9", "Jessica", "明るく温かみのある女性"),
-        VoiceOption("cjVigY5qzO86Huf0OWal", "Eric", "滑らかで信頼できる男性"),
-        VoiceOption("EXAVITQu4vr4xnSDxMaL", "Sarah", "成熟した自信に満ちた女性"),
-        VoiceOption("FGY2WhTYpPnrIDTdsKH5", "Laura", "熱心で独特な女性"),
-        VoiceOption("JBFqnCBsd6RMkjVDRZzb", "George", "温かみのある物語り男性"),
-        VoiceOption("CwhRBWXzGAHq8TQ4Fs17", "Roger", "落ち着いたカジュアル男性"),
-        VoiceOption("SAz9YHcvj6GT2YYXdXww", "River", "リラックスした中性"),
-        VoiceOption("bIHbv24MWmeRgasZH58o", "Will", "楽観的でリラックスした男性"),
-        VoiceOption("onwK4e9ZLuTAKqWW03F9", "Daniel", "安定した放送系男性"),
-        VoiceOption("pFZfaz1YfMItY4IjZDke", "Lily", "ベルベットのような女優系"),
-        VoiceOption("pqHfZKP75CvOlQylNhV4", "Bill", "賢明で成熟した男性"),
-        VoiceOption("Xb7hH8MSUJpSbSDYk0k2", "Alice", "明確で教育的な女性"),
-        VoiceOption("TX3AE5NoiEX1lRR4gU5H", "Liam", "エネルギッシュSNSクリエイター"),
-        VoiceOption("N2lVS1w4EtoT3dr4eOWO", "Callum", "ハスキーなトリックスター"),
-        VoiceOption("iP95p4xoKVk53GoZ742B", "Chris", "魅力的で親しみやすい男性")
+        VoiceOption("", "Default (API setting)", "Uses the default voice from your API configuration"),
+        VoiceOption("pNInz6obpgDQGcFmaJgB", "Adam", "Strong male voice"),
+        VoiceOption("EXAVITQu4vr4xnSDxMaL", "Bella", "Bright professional female"),
+        VoiceOption("nPczCjzI2devNBz1zQrb", "Brian", "Deep reassuring male"),
+        VoiceOption("IKne3meq5aSn9XLyUdCD", "Charlie", "Low confident male"),
+        VoiceOption("SOYHLrjzK2X1ezoPC6cr", "Harry", "Intense warrior-type male"),
+        VoiceOption("XrExE9yKIg1WjnnlVkGX", "Matilda", "Knowledgeable professional female"),
+        VoiceOption("cgSgspJ2msm6clMCkdW9", "Jessica", "Bright and warm female"),
+        VoiceOption("cjVigY5qzO86Huf0OWal", "Eric", "Smooth and trustworthy male"),
+        VoiceOption("EXAVITQu4vr4xnSDxMaL", "Sarah", "Mature confident female"),
+        VoiceOption("FGY2WhTYpPnrIDTdsKH5", "Laura", "Enthusiastic and distinctive female"),
+        VoiceOption("JBFqnCBsd6RMkjVDRZzb", "George", "Warm storytelling male"),
+        VoiceOption("CwhRBWXzGAHq8TQ4Fs17", "Roger", "Calm casual male"),
+        VoiceOption("SAz9YHcvj6GT2YYXdXww", "River", "Relaxed gender-neutral"),
+        VoiceOption("bIHbv24MWmeRgasZH58o", "Will", "Optimistic relaxed male"),
+        VoiceOption("onwK4e9ZLuTAKqWW03F9", "Daniel", "Steady broadcast-style male"),
+        VoiceOption("pFZfaz1YfMItY4IjZDke", "Lily", "Velvety actress-style female"),
+        VoiceOption("pqHfZKP75CvOlQylNhV4", "Bill", "Wise mature male"),
+        VoiceOption("Xb7hH8MSUJpSbSDYk0k2", "Alice", "Clear educational female"),
+        VoiceOption("TX3AE5NoiEX1lRR4gU5H", "Liam", "Energetic content creator"),
+        VoiceOption("N2lVS1w4EtoT3dr4eOWO", "Callum", "Husky trickster"),
+        VoiceOption("iP95p4xoKVk53GoZ742B", "Chris", "Charming approachable male")
+    )
+
+    data class ModelOption(val id: String, val name: String, val description: String)
+
+    val MODELS = listOf(
+        ModelOption("eleven_v3", "v3 (Latest)", "Highest fidelity, 70+ languages"),
+        ModelOption("eleven_multilingual_v2", "Multilingual v2", "High quality, 29 languages"),
+        ModelOption("eleven_flash_v2_5", "Flash v2.5", "Low latency, fast responses"),
+        ModelOption("eleven_flash_v2", "Flash v2", "Older low latency model")
     )
 }
 
@@ -300,6 +309,7 @@ fun SettingsScreen(
     // ElevenLabs
     var elevenLabsApiKey by rememberSaveable { mutableStateOf(settings.elevenLabsApiKey) }
     var elevenLabsVoiceId by rememberSaveable { mutableStateOf(settings.elevenLabsVoiceId) }
+    var elevenLabsModel by rememberSaveable { mutableStateOf(settings.elevenLabsModel) }
     var elevenLabsSpeed by rememberSaveable { mutableStateOf(settings.elevenLabsSpeed) }
     var showElevenLabsApiKey by rememberSaveable { mutableStateOf(false) }
     
@@ -469,6 +479,7 @@ fun SettingsScreen(
                             settings.ttsType = ttsType
                             settings.elevenLabsApiKey = elevenLabsApiKey
                             settings.elevenLabsVoiceId = elevenLabsVoiceId
+                            settings.elevenLabsModel = elevenLabsModel
                             settings.elevenLabsSpeed = elevenLabsSpeed
                             settings.openAiApiKey = openAiApiKey
                             settings.openAiVoice = openAiVoice
@@ -1047,7 +1058,7 @@ fun SettingsScreen(
                                 value = ttsTypeLabel,
                                 onValueChange = {},
                                 readOnly = true,
-                                label = { Text("TTS種別") },
+                                label = { Text(stringResource(R.string.tts_provider_label)) },
                                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = showTtsTypeMenu) },
                                 modifier = Modifier.fillMaxWidth().menuAnchor()
                             )
@@ -1120,6 +1131,8 @@ fun SettingsScreen(
                                     onShowApiKeyChange = { showElevenLabsApiKey = it },
                                     voiceId = elevenLabsVoiceId,
                                     onVoiceIdChange = { elevenLabsVoiceId = it },
+                                    modelId = elevenLabsModel,
+                                    onModelIdChange = { elevenLabsModel = it },
                                     speed = elevenLabsSpeed,
                                     onSpeedChange = { elevenLabsSpeed = it }
                                 )
@@ -1262,6 +1275,93 @@ fun SettingsScreen(
                             Text(stringResource(R.string.filler_phrases_desc), style = MaterialTheme.typography.bodySmall, color = Color.Gray)
                         }
                         Switch(checked = fillerPhrasesEnabled, onCheckedChange = { fillerPhrasesEnabled = it })
+                    }
+
+                    // Pre-generate filler phrases button (only for ElevenLabs)
+                    if (fillerPhrasesEnabled && ttsType == SettingsRepository.TTS_TYPE_ELEVENLABS) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        val fillerCache = remember { com.openclaw.assistant.speech.FillerPhraseCache.getInstance(context) }
+                        var isGenerating by rememberSaveable { mutableStateOf(false) }
+                        var generateProgress by rememberSaveable { mutableStateOf("") }
+                        val isCacheValid = remember(elevenLabsVoiceId, elevenLabsModel, elevenLabsSpeed) {
+                            fillerCache.isCacheValid()
+                        }
+
+                        Button(
+                            onClick = {
+                                // Save current settings first so cache uses them
+                                settings.elevenLabsApiKey = elevenLabsApiKey
+                                settings.elevenLabsVoiceId = elevenLabsVoiceId
+                                settings.elevenLabsModel = elevenLabsModel
+                                settings.elevenLabsSpeed = elevenLabsSpeed
+                                scope.launch {
+                                    isGenerating = true
+                                    generateProgress = "Generating..."
+                                    val success = fillerCache.generateAll { done, total ->
+                                        generateProgress = "Generating $done/$total..."
+                                    }
+                                    generateProgress = if (success) "Cached!" else "Failed"
+                                    isGenerating = false
+                                    delay(2000)
+                                    generateProgress = ""
+                                }
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                            enabled = !isGenerating && elevenLabsApiKey.isNotBlank() && elevenLabsVoiceId.isNotBlank(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (isCacheValid) Color(0xFF4CAF50) else MaterialTheme.colorScheme.primary
+                            )
+                        ) {
+                            if (isGenerating) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(16.dp),
+                                    color = MaterialTheme.colorScheme.onPrimary,
+                                    strokeWidth = 2.dp
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(generateProgress)
+                            } else {
+                                Icon(Icons.Default.Download, contentDescription = null, modifier = Modifier.size(18.dp))
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(if (isCacheValid) "Filler Phrases Cached" else "Generate Filler Phrases")
+                            }
+                        }
+                        if (!isCacheValid && !isGenerating) {
+                            Text(
+                                "Pre-generate phrases for instant playback in your ElevenLabs voice",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color.Gray,
+                                modifier = Modifier.padding(top = 4.dp)
+                            )
+                        }
+                    }
+                }
+
+                // TTS Response Cache stats (only for ElevenLabs)
+                if (ttsType == SettingsRepository.TTS_TYPE_ELEVENLABS) {
+                    Spacer(modifier = Modifier.height(12.dp))
+                    val responseCache = remember { com.openclaw.assistant.speech.TTSCache.getInstance(context) }
+                    val stats = remember(elevenLabsVoiceId, elevenLabsModel) { responseCache.getStats() }
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text("TTS Response Cache", style = MaterialTheme.typography.bodyLarge)
+                            Text(
+                                "${stats.fileCount} phrases cached (${String.format("%.1f", stats.totalSizeMB)} MB)",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color.Gray
+                            )
+                        }
+                        TextButton(onClick = {
+                            responseCache.clearCache()
+                            Toast.makeText(context, "Cache cleared", Toast.LENGTH_SHORT).show()
+                        }) {
+                            Text("Clear")
+                        }
                     }
                 }
             }
@@ -1855,6 +1955,8 @@ fun ElevenLabsSettingsCard(
     onApiKeyChange: (String) -> Unit,
     voiceId: String,
     onVoiceIdChange: (String) -> Unit,
+    modelId: String,
+    onModelIdChange: (String) -> Unit,
     showApiKey: Boolean,
     onShowApiKeyChange: (Boolean) -> Unit,
     speed: Float,
@@ -1874,7 +1976,7 @@ fun ElevenLabsSettingsCard(
     val selectedVoice: ElevenLabsVoiceOptions.VoiceOption = remember(safeVoiceId) {
         ElevenLabsVoiceOptions.VOICES.find { it.id == safeVoiceId } 
             ?: ElevenLabsVoiceOptions.VOICES.firstOrNull()
-            ?: ElevenLabsVoiceOptions.VoiceOption("", "デフォルト", "")
+            ?: ElevenLabsVoiceOptions.VoiceOption("", "Default", "")
     }
     
     // Ensure we have a valid voice name for display
@@ -2031,7 +2133,66 @@ fun ElevenLabsSettingsCard(
             }
             
             Spacer(modifier = Modifier.height(16.dp))
-            
+
+            // Model selection dropdown
+            var showModelDropdown by rememberSaveable { mutableStateOf(false) }
+            val selectedModel = remember(modelId) {
+                ElevenLabsVoiceOptions.MODELS.find { it.id == modelId }
+                    ?: ElevenLabsVoiceOptions.ModelOption(modelId, modelId, "")
+            }
+
+            ExposedDropdownMenuBox(
+                expanded = showModelDropdown,
+                onExpandedChange = { showModelDropdown = it }
+            ) {
+                OutlinedTextField(
+                    value = selectedModel.name,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text(stringResource(R.string.elevenlabs_model_label)) },
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = showModelDropdown) },
+                    supportingText = {
+                        if (selectedModel.description.isNotEmpty()) {
+                            Text(selectedModel.description, style = MaterialTheme.typography.bodySmall)
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth().menuAnchor()
+                )
+
+                ExposedDropdownMenu(
+                    expanded = showModelDropdown,
+                    onDismissRequest = { showModelDropdown = false }
+                ) {
+                    ElevenLabsVoiceOptions.MODELS.forEach { model ->
+                        DropdownMenuItem(
+                            text = {
+                                Column {
+                                    Text(model.name, style = MaterialTheme.typography.bodyMedium)
+                                    if (model.description.isNotEmpty()) {
+                                        Text(
+                                            model.description,
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                    }
+                                }
+                            },
+                            onClick = {
+                                onModelIdChange(model.id)
+                                showModelDropdown = false
+                            },
+                            leadingIcon = {
+                                if (modelId == model.id) {
+                                    Icon(Icons.Default.Check, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                                }
+                            }
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             // Speed setting (ElevenLabs API limitation: 0.7 to 1.2)
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -2357,7 +2518,7 @@ fun VoiceVoxSettingsCard(
                                     tint = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
                                 )
                                 Text(
-                                    "クレジット表記",
+                                    "Credit Attribution",
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
                                 )
@@ -2391,7 +2552,7 @@ fun VoiceVoxSettingsCard(
                                 )
                                 Spacer(modifier = Modifier.width(4.dp))
                                 Text(
-                                    "利用規約を確認",
+                                    "View Terms",
                                     style = MaterialTheme.typography.bodySmall
                                 )
                             }
@@ -2486,7 +2647,7 @@ fun VoiceVoxSettingsCard(
                                     style = MaterialTheme.typography.bodyMedium
                                 )
                                 Text(
-                                    "${vvmFile}.vvm · ${modelManager.getVvmFileSizeMB(vvmFile)} · ${styleCount}スタイル",
+                                    "${vvmFile}.vvm · ${modelManager.getVvmFileSizeMB(vvmFile)} · ${styleCount} styles",
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )

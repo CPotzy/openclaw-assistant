@@ -620,8 +620,13 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun startListeningInternal(initialDelayMs: Long, forceRestart: Boolean) {
-        Log.e(TAG, "startListening() called, isListening=${_uiState.value.isListening}")
+        Log.e(TAG, "startListening() called, isListening=${_uiState.value.isListening}, isThinking=${_uiState.value.isThinking}, isSpeaking=${_uiState.value.isSpeaking}")
         if (_uiState.value.isListening && !forceRestart) return
+        // Guard: do not start listening while TTS is actively playing (prevents recording own audio)
+        if (_uiState.value.isSpeaking || _uiState.value.isPreparingSpeech) {
+            Log.w(TAG, "startListening() blocked: TTS is active")
+            return
+        }
 
         // Pause Hotword Service to prevent microphone conflict
         sendPauseBroadcast()
@@ -1038,14 +1043,16 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun playFillerPhrase() {
-        val app = getApplication<Application>()
-        val phrase = app.getString(R.string.filler_ok)
-
         stopAuxiliarySpeech()
+        val fillerCache = com.openclaw.assistant.speech.FillerPhraseCache.getInstance(getApplication())
         var playbackJob: Job? = null
         playbackJob = viewModelScope.launch {
             try {
-                ttsManager?.speakWithProgress(phrase)?.collect {} // 発話完了を待たない（progress監視のみだが実質投げっぱなし）
+                // Try cached audio first (instant), fall back to live TTS
+                if (!fillerCache.playRandomFiller()) {
+                    val phrase = fillerCache.fillerPhrases.random()
+                    ttsManager?.speakWithProgress(phrase)?.collect {}
+                }
             } catch (_: kotlinx.coroutines.CancellationException) {
             } catch (e: Exception) {
                 Log.w(TAG, "Failed to play filler phrase", e)
@@ -1059,19 +1066,16 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun playWaitPhrase() {
-        val app = getApplication<Application>()
-        val waitPhrases = listOf(
-            app.getString(R.string.wait_phrase_let_me_think),
-            app.getString(R.string.wait_phrase_one_moment),
-            app.getString(R.string.wait_phrase_checking)
-        )
-        val phrase = waitPhrases.random()
-
         stopAuxiliarySpeech()
+        val fillerCache = com.openclaw.assistant.speech.FillerPhraseCache.getInstance(getApplication())
         var playbackJob: Job? = null
         playbackJob = viewModelScope.launch {
             try {
-                ttsManager?.speakWithProgress(phrase)?.collect {}
+                // Try cached audio first (instant), fall back to live TTS
+                if (!fillerCache.playRandomWaitPhrase()) {
+                    val phrase = fillerCache.waitPhrases.random()
+                    ttsManager?.speakWithProgress(phrase)?.collect {}
+                }
             } catch (_: kotlinx.coroutines.CancellationException) {
             } catch (e: Exception) {
                 Log.w(TAG, "Failed to play wait phrase", e)

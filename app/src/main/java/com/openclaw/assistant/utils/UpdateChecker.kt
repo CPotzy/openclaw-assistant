@@ -23,7 +23,7 @@ data class GithubRelease(
 
 object UpdateChecker {
     private const val TAG = "UpdateChecker"
-    private const val GITHUB_API_URL = "https://api.github.com/repos/yuga-hashimoto/openclaw-assistant/releases/latest"
+    private const val GITHUB_API_URL = "https://api.github.com/repos/CPotzy/openclaw-assistant/releases/latest"
     
     // Use a short timeout for update checks so it doesn't block startup long
     private val client = OkHttpClient.Builder()
@@ -34,6 +34,8 @@ object UpdateChecker {
     private val gson = Gson()
 
     suspend fun checkUpdate(currentVersion: String): UpdateInfo? = withContext(Dispatchers.IO) {
+        // Disabled for custom fork build — no upstream update checking
+        return@withContext null
         try {
             val request = Request.Builder()
                 .url(GITHUB_API_URL)
