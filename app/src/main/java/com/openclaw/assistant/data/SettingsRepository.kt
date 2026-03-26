@@ -347,7 +347,7 @@ class SettingsRepository(context: Context) {
         
         // Default ElevenLabs voice ID (empty - user must set)
         const val DEFAULT_ELEVENLABS_VOICE_ID = ""
-        const val DEFAULT_ELEVENLABS_MODEL = "eleven_multilingual_v2"
+        const val DEFAULT_ELEVENLABS_MODEL = "eleven_v3"
         
         // Default OpenAI voice
         const val DEFAULT_OPENAI_VOICE = "coral"

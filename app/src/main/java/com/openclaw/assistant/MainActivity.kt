@@ -57,6 +57,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
+import com.openclaw.assistant.api.OpenClawClient
 import com.openclaw.assistant.data.SettingsRepository
 import com.openclaw.assistant.service.HotwordService
 import com.openclaw.assistant.service.NodeForegroundService
@@ -691,18 +694,52 @@ fun MainScreen(
             }
 
             // === SYSTEM STATUS DASHBOARD ===
-            val displayStatusText = when (nodeStatusText) {
-                "Operator Online (Node Offline)" -> stringResource(R.string.status_operator_online_node_offline)
-                "Node Online (Operator Offline)" -> stringResource(R.string.status_node_online_operator_offline)
-                "Offline" -> stringResource(R.string.status_offline)
-                else -> nodeStatusText
+            val isHttpMode = settings.connectionType == SettingsRepository.CONNECTION_TYPE_HTTP
+            val scope = rememberCoroutineScope()
+            var httpConnected by remember { mutableStateOf(settings.isVerified) }
+            var httpTesting by remember { mutableStateOf(false) }
+            val apiClient = remember { OpenClawClient() }
+
+            val displayStatusText = if (isHttpMode) {
+                if (httpTesting) stringResource(R.string.testing)
+                else if (httpConnected) stringResource(R.string.connected)
+                else stringResource(R.string.status_offline)
+            } else {
+                when (nodeStatusText) {
+                    "Operator Online (Node Offline)" -> stringResource(R.string.status_operator_online_node_offline)
+                    "Node Online (Operator Offline)" -> stringResource(R.string.status_node_online_operator_offline)
+                    "Offline" -> stringResource(R.string.status_offline)
+                    else -> nodeStatusText
+                }
             }
-            
+
             SystemStatusCard(
-                connected = nodeConnected,
+                connected = if (isHttpMode) httpConnected else nodeConnected,
                 statusText = displayStatusText,
-                onConnect = { runtime.connectManual() },
-                onDisconnect = { runtime.disconnect() },
+                onConnect = {
+                    if (isHttpMode) {
+                        val httpUrl = settings.httpUrl.trimEnd('/').let { url ->
+                            if (url.contains("/v1/")) url else "$url/v1/chat/completions"
+                        }
+                        scope.launch {
+                            httpTesting = true
+                            val result = apiClient.testConnection(httpUrl, settings.authToken)
+                            httpConnected = result.isSuccess
+                            settings.isVerified = result.isSuccess
+                            httpTesting = false
+                        }
+                    } else {
+                        runtime.connectManual()
+                    }
+                },
+                onDisconnect = {
+                    if (isHttpMode) {
+                        httpConnected = false
+                        settings.isVerified = false
+                    } else {
+                        runtime.disconnect()
+                    }
+                },
                 onOpenSettings = onOpenSettings
             )
             

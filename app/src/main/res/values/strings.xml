@@ -57,7 +57,7 @@
     <string name="listening">Listening…</string>
     <string name="thinking">Thinking…</string>
     <string name="speaking">Speaking…</string>
-    <string name="preparing_speech">読み込み中…</string>
+    <string name="preparing_speech">Loading…</string>
     <string name="ready">Ready</string>
     <string name="error_no_webhook">Please configure HTTP connection</string>
 
@@ -120,50 +120,50 @@
     <string name="elevenlabs_api_key_label">ElevenLabs API Key</string>
     <string name="elevenlabs_voice_id_label">Voice ID</string>
     <string name="elevenlabs_model_label">Model</string>
-    <string name="elevenlabs_custom_voice_help">ElevenLabsダッシュボードで作成した音声のIDも使用できます</string>
+    <string name="elevenlabs_custom_voice_help">You can also use a voice ID created in your ElevenLabs dashboard</string>
     <string name="openai_api_key_label">OpenAI API Key</string>
     <string name="openai_voice_label">Voice</string>
     <string name="openai_model_label">Model</string>
     <string name="voicevox_style_label">Character / Style</string>
-    <string name="voicevox_terms_notice">VOICEVOX利用規約に同意</string>
-    <string name="get_api_key">API Keyはこちらから取得</string>
-    <string name="preset_voice">プリセット音声</string>
-    <string name="custom_voice">カスタムID</string>
-    <string name="select_voice">音声を選択</string>
-    <string name="custom_voice_id">Voice ID（カスタム）</string>
-    <string name="select_character">キャラクター・スタイル</string>
-    <string name="character_style">キャラクター・スタイル</string>
-    <string name="voicevox_downloaded">音声データの準備が完了しています</string>
-    <string name="voicevox_downloading">音声データをダウンロード中</string>
-    <string name="voicevox_download_required">音声データのダウンロードが必要です</string>
-    <string name="voicevox_selected_character">選択中: %1$s (%2$s)</string>
-    <string name="voicevox_terms_title">VOICEVOX利用規約</string>
-    <string name="voicevox_terms_description">VOICEVOXを使用するには、利用規約への同意が必要です。音声データはオープンソースのライブラリを使用して生成されます。</string>
-    <string name="voicevox_view_terms">利用規約を詳しく見る</string>
-    <string name="voicevox_accept_terms">利用規約に同意します</string>
-    <string name="voicevox_terms_dialog_title">VOICEVOX利用規約</string>
-    <string name="voicevox_terms_full">VOICEVOXの音声データを利用する場合、以下の規約に同意する必要があります：
+    <string name="voicevox_terms_notice">Agree to VOICEVOX Terms of Use</string>
+    <string name="get_api_key">Get your API Key here</string>
+    <string name="preset_voice">Preset Voice</string>
+    <string name="custom_voice">Custom ID</string>
+    <string name="select_voice">Select Voice</string>
+    <string name="custom_voice_id">Voice ID (Custom)</string>
+    <string name="select_character">Character / Style</string>
+    <string name="character_style">Character / Style</string>
+    <string name="voicevox_downloaded">Voice data is ready</string>
+    <string name="voicevox_downloading">Downloading voice data</string>
+    <string name="voicevox_download_required">Voice data download required</string>
+    <string name="voicevox_selected_character">Selected: %1$s (%2$s)</string>
+    <string name="voicevox_terms_title">VOICEVOX Terms of Use</string>
+    <string name="voicevox_terms_description">You must agree to the terms of use to use VOICEVOX. Voice data is generated using open-source libraries.</string>
+    <string name="voicevox_view_terms">View terms in detail</string>
+    <string name="voicevox_accept_terms">I agree to the terms of use</string>
+    <string name="voicevox_terms_dialog_title">VOICEVOX Terms of Use</string>
+    <string name="voicevox_terms_full">To use VOICEVOX voice data, you must agree to the following terms:
 
-1. 音声データは個人利用・商用利用ともに可能です。
-2. 音声ライブラリの権利は各キャラクターの権利者に帰属します。
-3. 音声データの再配布は禁止されています。
-4. 違法な目的での使用は禁止されています。
+1. Voice data may be used for personal and commercial purposes.
+2. Rights to voice libraries belong to the respective character rights holders.
+3. Redistribution of voice data is prohibited.
+4. Use for illegal purposes is prohibited.
 
-詳細はVOICEVOX公式サイトでご確認ください。</string>
-    <string name="voicevox_downloaded_files">ダウンロード済み音声データ</string>
-    <string name="voicevox_delete_confirm_title">選択中の音声を削除しますか？</string>
-    <string name="voicevox_delete_confirm_message">「%s」は現在選択中の音声です。削除してもよろしいですか？</string>
-    <string name="voicevox_download">音声データをダウンロード</string>
-    <string name="voicevox_redownload">音声データを再ダウンロード</string>
-    <string name="voicevox_setup_title">VOICEVOXセットアップ</string>
-    <string name="voicevox_setup_description">音声データをダウンロードして、VOICEVOX TTSを使用できるようにします。</string>
-    <string name="voicevox_setup_steps">・OpenJTalk辞書のコピー\n・VVMモデルのダウンロード</string>
-    <string name="voicevox_step_dictionary">OpenJTalk辞書</string>
-    <string name="voicevox_step_model">VVMモデル</string>
-    <string name="voicevox_setup_complete">セットアップが完了しました！</string>
-    <string name="voicevox_start_download">ダウンロード開始</string>
-    <string name="done">完了</string>
-    <string name="start_setup">セットアップ開始</string>
+See the official VOICEVOX website for details.</string>
+    <string name="voicevox_downloaded_files">Downloaded voice data</string>
+    <string name="voicevox_delete_confirm_title">Delete selected voice?</string>
+    <string name="voicevox_delete_confirm_message">\"%s\" is currently selected. Are you sure you want to delete it?</string>
+    <string name="voicevox_download">Download voice data</string>
+    <string name="voicevox_redownload">Re-download voice data</string>
+    <string name="voicevox_setup_title">VOICEVOX Setup</string>
+    <string name="voicevox_setup_description">Download voice data to enable VOICEVOX TTS.</string>
+    <string name="voicevox_setup_steps">- Copy OpenJTalk dictionary\n- Download VVM model</string>
+    <string name="voicevox_step_dictionary">OpenJTalk Dictionary</string>
+    <string name="voicevox_step_model">VVM Model</string>
+    <string name="voicevox_setup_complete">Setup complete!</string>
+    <string name="voicevox_start_download">Start Download</string>
+    <string name="done">Done</string>
+    <string name="start_setup">Start Setup</string>
     <string name="read_ai_responses">Read AI responses aloud</string>
     <string name="continuous_conversation">Continuous Conversation</string>
     <string name="auto_start_mic">Auto-start mic after AI speaks</string>
@@ -189,10 +189,13 @@
     <string name="tts_barge_in_desc">Say wake word during speech to interrupt and speak</string>
 
     <!-- Filler phrase content (spoken by TTS) -->
-    <string name="filler_ok">OK</string>
-    <string name="wait_phrase_let_me_think">Let me think…</string>
-    <string name="wait_phrase_one_moment">One moment…</string>
-    <string name="wait_phrase_checking">Let me check…</string>
+    <string name="filler_got_it">Got it.</string>
+    <string name="filler_sure">Sure.</string>
+    <string name="filler_on_it">On it.</string>
+    <string name="wait_phrase_let_me_think">Let me think about that.</string>
+    <string name="wait_phrase_one_moment">One moment.</string>
+    <string name="wait_phrase_checking">Let me check on that.</string>
+    <string name="wait_phrase_working_on_it">Working on it.</string>
 
     <string name="activation_phrase">Activation Phrase</string>
     <string name="custom_wake_word">Custom Wake Word</string>
@@ -529,53 +532,53 @@
     <string name="setup_guide_copied">Copied</string>
 
     <!-- Credits Screen -->
-    <string name="credits_title">クレジット</string>
-    <string name="credits_back_description">戻る</string>
-    <string name="credits_oss_title">オープンソースライセンス</string>
-    <string name="credits_oss_description">このアプリケーションは以下のオープンソースソフトウェアを使用しています：</string>
-    <string name="credits_voicevox_lib_title">VOICEVOX音声ライブラリ</string>
-    <string name="credits_voicevox_lib_description">このアプリケーションはVOICEVOXの音声ライブラリを使用しています。</string>
-    <string name="credits_voicevox_current_voice">使用している音声</string>
-    <string name="credits_voicevox_open_terms">利用規約を開く</string>
-    <string name="credits_voicevox_about_title">VOICEVOXについて</string>
-    <string name="credits_voicevox_about_description">VOICEVOXは商用・非商用問わず利用可能な日本語音声合成ソフトウェアです。詳細な利用規約は各キャラクターの公式サイトをご確認ください。</string>
-    <string name="credits_voicevox_official_site">VOICEVOX公式サイト</string>
-    <string name="credits_voicevox_terms_link">VOICEVOX利用規約</string>
-    <string name="credits_voicevox_unknown_character">スタイルID: %1$d（詳細情報なし）</string>
-    <string name="credits_support_title">開発をサポートする</string>
-    <string name="credits_support_description">このアプリが役に立った場合は、Ko-fiでの支援をご検討ください。</string>
+    <string name="credits_title">Credits</string>
+    <string name="credits_back_description">Back</string>
+    <string name="credits_oss_title">Open Source Licenses</string>
+    <string name="credits_oss_description">This application uses the following open source software:</string>
+    <string name="credits_voicevox_lib_title">VOICEVOX Voice Library</string>
+    <string name="credits_voicevox_lib_description">This application uses the VOICEVOX voice library.</string>
+    <string name="credits_voicevox_current_voice">Voice in use</string>
+    <string name="credits_voicevox_open_terms">Open Terms of Use</string>
+    <string name="credits_voicevox_about_title">About VOICEVOX</string>
+    <string name="credits_voicevox_about_description">VOICEVOX is a Japanese text-to-speech software available for both commercial and non-commercial use. See the official site for each character\'s terms.</string>
+    <string name="credits_voicevox_official_site">VOICEVOX Official Site</string>
+    <string name="credits_voicevox_terms_link">VOICEVOX Terms of Use</string>
+    <string name="credits_voicevox_unknown_character">Style ID: %1$d (no details available)</string>
+    <string name="credits_support_title">Support Development</string>
+    <string name="credits_support_description">If you find this app useful, please consider supporting on Ko-fi.</string>
     <string name="credits_support_kofi_button">Support the Developer</string>
 
     <!-- TTS Provider Names and Descriptions -->
-    <string name="tts_provider_local_name">ローカルTTS</string>
-    <string name="tts_provider_local_description">Android標準の音声合成</string>
-    <string name="tts_provider_elevenlabs_description">高品質クラウド音声合成</string>
-    <string name="tts_provider_voicevox_description">日本語音声合成（ずんだもん等）</string>
+    <string name="tts_provider_local_name">Local TTS</string>
+    <string name="tts_provider_local_description">Android built-in text-to-speech</string>
+    <string name="tts_provider_elevenlabs_description">High quality cloud text-to-speech</string>
+    <string name="tts_provider_voicevox_description">Japanese text-to-speech (Zundamon, etc.)</string>
 
     <!-- TTS Error Messages -->
-    <string name="tts_error_unknown_type">不明なTTSタイプ: %1$s</string>
-    <string name="tts_error_provider_unavailable">%1$sは利用できません</string>
-    <string name="tts_error_elevenlabs_no_apikey">ElevenLabs API Keyが設定されていません</string>
-    <string name="tts_error_openai_no_apikey">OpenAI API Keyが設定されていません</string>
-    <string name="tts_error_voicevox_dict_missing">OpenJTalk辞書が見つかりません</string>
-    <string name="tts_error_voicevox_dict_required">OpenJTalk辞書が必要です</string>
-    <string name="tts_error_voicevox_not_initialized">VOICEVOXが初期化されていません</string>
-    <string name="tts_error_voicevox_terms_required">VOICEVOX利用規約に同意してください</string>
-    <string name="tts_error_not_initialized">初期化されていません</string>
-    <string name="tts_error_stopped">停止しました</string>
-    <string name="tts_error_generic">エラーが発生しました</string>
+    <string name="tts_error_unknown_type">Unknown TTS type: %1$s</string>
+    <string name="tts_error_provider_unavailable">%1$s is not available</string>
+    <string name="tts_error_elevenlabs_no_apikey">ElevenLabs API Key is not configured</string>
+    <string name="tts_error_openai_no_apikey">OpenAI API Key is not configured</string>
+    <string name="tts_error_voicevox_dict_missing">OpenJTalk dictionary not found</string>
+    <string name="tts_error_voicevox_dict_required">OpenJTalk dictionary is required</string>
+    <string name="tts_error_voicevox_not_initialized">VOICEVOX is not initialized</string>
+    <string name="tts_error_voicevox_terms_required">Please agree to the VOICEVOX terms of use</string>
+    <string name="tts_error_not_initialized">Not initialized</string>
+    <string name="tts_error_stopped">Stopped</string>
+    <string name="tts_error_generic">An error occurred</string>
 
     <!-- OpenAI Model Descriptions -->
-    <string name="openai_model_desc_latest">最新・最も信頼性が高い</string>
-    <string name="openai_model_desc_low_latency">低レイテンシー</string>
-    <string name="openai_model_desc_hd">高品質</string>
+    <string name="openai_model_desc_latest">Latest and most reliable</string>
+    <string name="openai_model_desc_low_latency">Low latency</string>
+    <string name="openai_model_desc_hd">High quality</string>
 
     <!-- VoiceVox Display Strings -->
-    <string name="voicevox_unknown_vvm">不明</string>
-    <string name="voicevox_other_styles">他%1$dスタイル</string>
-    <string name="voicevox_other_chars">他%1$dキャラ</string>
-    <string name="voicevox_size_approx_mb">約%1$dMB</string>
-    <string name="voicevox_size_unknown">不明</string>
+    <string name="voicevox_unknown_vvm">Unknown</string>
+    <string name="voicevox_other_styles">%1$d more styles</string>
+    <string name="voicevox_other_chars">%1$d more characters</string>
+    <string name="voicevox_size_approx_mb">~%1$dMB</string>
+    <string name="voicevox_size_unknown">Unknown</string>
 
 
 
