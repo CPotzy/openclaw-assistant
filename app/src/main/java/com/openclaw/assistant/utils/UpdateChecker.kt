@@ -34,6 +34,8 @@ object UpdateChecker {
     private val gson = Gson()
 
     suspend fun checkUpdate(currentVersion: String): UpdateInfo? = withContext(Dispatchers.IO) {
+        // Disabled for custom fork build — no upstream update checking
+        return@withContext null
         try {
             val request = Request.Builder()
                 .url(GITHUB_API_URL)
