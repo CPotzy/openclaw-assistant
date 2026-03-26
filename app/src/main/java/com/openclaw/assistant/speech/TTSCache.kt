@@ -105,6 +105,70 @@ class TTSCache(private val context: Context) {
     }
 
     /**
+     * Canonicalize a response to a known fixed phrase for maximum cache hits.
+     * Maps varied AI responses like "The lamp has been turned off. Haribol."
+     * to a single canonical phrase "Done. Lamp is off."
+     * Returns the original text if no pattern matches.
+     */
+    fun canonicalize(text: String): String {
+        val t = text.lowercase().trim()
+            .replace(Regex("[.!,]+$"), "")  // strip trailing punctuation
+            .replace("haribol", "").replace("prabhu", "").replace("caleb", "")
+            .replace(Regex("\\s+"), " ").trim()
+
+        // Device state confirmations
+        val onPatterns = listOf("is now on", "has been turned on", "turned on", "is on", "are now on", "have been turned on", "are on")
+        val offPatterns = listOf("is now off", "has been turned off", "turned off", "is off", "are now off", "have been turned off", "are off")
+
+        data class DeviceMapping(val keywords: List<String>, val name: String)
+        val devices = listOf(
+            DeviceMapping(listOf("lamp"), "Lamp"),
+            DeviceMapping(listOf("living room"), "Living room lights"),
+            DeviceMapping(listOf("kitchen"), "Kitchen lights"),
+            DeviceMapping(listOf("all light", "all the light", "every light"), "All lights"),
+            DeviceMapping(listOf("light"), "Lights"),
+            DeviceMapping(listOf("air con", "ac ", "a.c."), "Air conditioning"),
+            DeviceMapping(listOf("fan light", "fan lamp"), "Fan light"),
+            DeviceMapping(listOf("fan"), "Fan"),
+        )
+
+        for (device in devices) {
+            if (device.keywords.any { t.contains(it) }) {
+                for (p in onPatterns) {
+                    if (t.contains(p)) {
+                        Log.d(TAG, "Canonicalized: '$text' -> 'Done. ${device.name} is on.'")
+                        return "Done. ${device.name} is on."
+                    }
+                }
+                for (p in offPatterns) {
+                    if (t.contains(p)) {
+                        Log.d(TAG, "Canonicalized: '$text' -> 'Done. ${device.name} is off.'")
+                        return "Done. ${device.name} is off."
+                    }
+                }
+                if (t.contains("brightness")) {
+                    return "Done. Brightness set."
+                }
+            }
+        }
+
+        // Music confirmations
+        if (t.contains("now playing") || t.contains("playing") && (t.contains("kirtan") || t.contains("music"))) {
+            return "Now playing."
+        }
+        if (t.contains("paused")) return "Paused."
+        if (t.contains("stopped") || t.contains("music stopped")) return "Stopped."
+        if (t.contains("volume") && (t.contains("set") || t.contains("changed") || t.contains("adjusted"))) return "Done. Volume set."
+
+        // Error messages
+        if (t.contains("timed out")) return "Sorry, please try again."
+        if (t.contains("trouble connecting") || t.contains("could not connect") || t.contains("unable to connect")) return "Sorry, that did not work."
+
+        // No match — return original
+        return text
+    }
+
+    /**
      * Normalize text for cache matching.
      * "Done. All the lights are on." and "Done. All lights are on." hit the same cache.
      */

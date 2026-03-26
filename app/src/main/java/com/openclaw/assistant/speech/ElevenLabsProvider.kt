@@ -45,23 +45,26 @@ class ElevenLabsProvider(private val context: Context) : TTSProvider {
             return@withContext false
         }
 
+        // Canonicalize text to maximize cache hits
+        val canonical = ttsCache.canonicalize(text)
+
         try {
             // Check cache first
-            val cachedFile = ttsCache.get(text)
+            val cachedFile = ttsCache.get(canonical)
             if (cachedFile != null) {
-                Log.d(TAG, "Playing from cache: '${text.take(50)}'")
+                Log.d(TAG, "Playing from cache: '${canonical.take(50)}'")
                 return@withContext playAudioFile(cachedFile)
             }
 
-            // Cache miss — call ElevenLabs API
-            val audioData = synthesizeSpeech(text)
+            // Cache miss — call ElevenLabs API with canonical text
+            val audioData = synthesizeSpeech(canonical)
             if (audioData == null) {
                 Log.e(TAG, "Failed to synthesize speech")
                 return@withContext false
             }
 
             // Cache the result and play from cache file
-            val cacheFile = ttsCache.put(text, audioData)
+            val cacheFile = ttsCache.put(canonical, audioData)
             playAudioFile(cacheFile)
         } catch (e: Exception) {
             Log.e(TAG, "Error speaking: ${e.message}", e)
@@ -198,17 +201,20 @@ class ElevenLabsProvider(private val context: Context) : TTSProvider {
             return@channelFlow
         }
 
+        // Canonicalize text to maximize cache hits
+        val canonical = ttsCache.canonicalize(text)
+
         // Check cache first — skip API call entirely if cached
-        val cachedFile = ttsCache.get(text)
+        val cachedFile = ttsCache.get(canonical)
         val audioFile: File
 
         if (cachedFile != null) {
-            Log.d(TAG, "speakWithProgress cache HIT: '${text.take(50)}'")
+            Log.d(TAG, "speakWithProgress cache HIT: '${canonical.take(50)}'")
             audioFile = cachedFile
         } else {
-            // Cache miss — call ElevenLabs API
+            // Cache miss — call ElevenLabs API with canonical text
             val audioData = try {
-                synthesizeSpeech(text)
+                synthesizeSpeech(canonical)
             } catch (e: Exception) {
                 Log.e(TAG, "Synthesis error", e)
                 null
@@ -220,7 +226,7 @@ class ElevenLabsProvider(private val context: Context) : TTSProvider {
             }
 
             // Cache the result
-            audioFile = ttsCache.put(text, audioData)
+            audioFile = ttsCache.put(canonical, audioData)
         }
 
         // Play audio - Speaking state emitted only when playback actually starts
