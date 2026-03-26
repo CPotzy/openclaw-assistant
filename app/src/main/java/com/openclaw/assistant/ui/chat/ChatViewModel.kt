@@ -622,9 +622,9 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     private fun startListeningInternal(initialDelayMs: Long, forceRestart: Boolean) {
         Log.e(TAG, "startListening() called, isListening=${_uiState.value.isListening}, isThinking=${_uiState.value.isThinking}, isSpeaking=${_uiState.value.isSpeaking}")
         if (_uiState.value.isListening && !forceRestart) return
-        // Guard: do not start a new listening session while a response is being processed or spoken
-        if (_uiState.value.isThinking || _uiState.value.isSpeaking || _uiState.value.isPreparingSpeech) {
-            Log.w(TAG, "startListening() blocked: session is busy (thinking/speaking)")
+        // Guard: do not start listening while TTS is actively playing (prevents recording own audio)
+        if (_uiState.value.isSpeaking || _uiState.value.isPreparingSpeech) {
+            Log.w(TAG, "startListening() blocked: TTS is active")
             return
         }
 

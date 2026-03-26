@@ -447,9 +447,6 @@ fun ChatScreen(
                                 onInterruptAndListen()
                             } else if (uiState.isListening) {
                                 onStopListening()
-                            } else if (uiState.isThinking || uiState.isPreparingSpeech) {
-                                // Ignore mic tap while processing - prevents overlapping sessions
-                                Log.d("ChatActivity", "Mic tap ignored: session is busy (thinking/preparing)")
                             } else {
                                 onStartListening()
                             }
