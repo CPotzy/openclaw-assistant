@@ -29,38 +29,40 @@ private const val API_BASE_URL = "https://api.elevenlabs.io/v1"
  * ElevenLabs TTS Provider
  */
 class ElevenLabsProvider(private val context: Context) : TTSProvider {
-    
+
     private val settings = SettingsRepository.getInstance(context)
+    private val ttsCache = TTSCache.getInstance(context)
     private val client = OkHttpClient.Builder()
         .connectTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
         .readTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
         .build()
-    
+
     private var mediaPlayer: MediaPlayer? = null
-    
+
     override suspend fun speak(text: String): Boolean = withContext(Dispatchers.IO) {
         if (!isConfigured()) {
             Log.e(TAG, "Not configured: ${getConfigurationError()}")
             return@withContext false
         }
-        
+
         try {
-            // Request audio from ElevenLabs API
+            // Check cache first
+            val cachedFile = ttsCache.get(text)
+            if (cachedFile != null) {
+                Log.d(TAG, "Playing from cache: '${text.take(50)}'")
+                return@withContext playAudioFile(cachedFile)
+            }
+
+            // Cache miss — call ElevenLabs API
             val audioData = synthesizeSpeech(text)
             if (audioData == null) {
                 Log.e(TAG, "Failed to synthesize speech")
                 return@withContext false
             }
-            
-            // Save to temp file and play
-            val tempFile = File.createTempFile("elevenlabs_", ".mp3", context.cacheDir)
-            FileOutputStream(tempFile).use { it.write(audioData) }
 
-            try {
-                playAudioFile(tempFile)
-            } finally {
-                tempFile.delete()
-            }
+            // Cache the result and play from cache file
+            val cacheFile = ttsCache.put(text, audioData)
+            playAudioFile(cacheFile)
         } catch (e: Exception) {
             Log.e(TAG, "Error speaking: ${e.message}", e)
             false
@@ -190,48 +192,42 @@ class ElevenLabsProvider(private val context: Context) : TTSProvider {
     
     override fun speakWithProgress(text: String): Flow<TTSState> = channelFlow {
         send(TTSState.Preparing)
-        
+
         if (!isConfigured()) {
             send(TTSState.Error(getConfigurationError() ?: context.getString(R.string.tts_error_not_initialized)))
             return@channelFlow
         }
-        
-        // Synthesize speech (API call)
-        val audioData = try {
-            synthesizeSpeech(text)
-        } catch (e: Exception) {
-            Log.e(TAG, "Synthesis error", e)
-            null
-        }
-        
-        if (audioData == null) {
-            send(TTSState.Error("Failed to synthesize speech"))
-            return@channelFlow
-        }
-        
-        // Save to temp file
-        val tempFile = try {
-            File.createTempFile("elevenlabs_", ".mp3", context.cacheDir).apply {
-                FileOutputStream(this).use { it.write(audioData) }
+
+        // Check cache first — skip API call entirely if cached
+        val cachedFile = ttsCache.get(text)
+        val audioFile: File
+
+        if (cachedFile != null) {
+            Log.d(TAG, "speakWithProgress cache HIT: '${text.take(50)}'")
+            audioFile = cachedFile
+        } else {
+            // Cache miss — call ElevenLabs API
+            val audioData = try {
+                synthesizeSpeech(text)
+            } catch (e: Exception) {
+                Log.e(TAG, "Synthesis error", e)
+                null
             }
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to save audio", e)
-            send(TTSState.Error("Failed to save audio"))
-            return@channelFlow
+
+            if (audioData == null) {
+                send(TTSState.Error("Failed to synthesize speech"))
+                return@channelFlow
+            }
+
+            // Cache the result
+            audioFile = ttsCache.put(text, audioData)
         }
-        
+
         // Play audio - Speaking state emitted only when playback actually starts
-        val success = playAudioFile(tempFile) {
+        val success = playAudioFile(audioFile) {
             trySend(TTSState.Speaking)
         }
-        
-        // Cleanup
-        try {
-            tempFile.delete()
-        } catch (e: Exception) {
-            Log.w(TAG, "Failed to delete temp file", e)
-        }
-        
+
         if (success) {
             send(TTSState.Done)
         } else {

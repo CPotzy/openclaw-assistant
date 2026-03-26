@@ -1336,6 +1336,34 @@ fun SettingsScreen(
                         }
                     }
                 }
+
+                // TTS Response Cache stats (only for ElevenLabs)
+                if (ttsType == SettingsRepository.TTS_TYPE_ELEVENLABS) {
+                    Spacer(modifier = Modifier.height(12.dp))
+                    val responseCache = remember { com.openclaw.assistant.speech.TTSCache.getInstance(context) }
+                    val stats = remember(elevenLabsVoiceId, elevenLabsModel) { responseCache.getStats() }
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text("TTS Response Cache", style = MaterialTheme.typography.bodyLarge)
+                            Text(
+                                "${stats.fileCount} phrases cached (${String.format("%.1f", stats.totalSizeMB)} MB)",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color.Gray
+                            )
+                        }
+                        TextButton(onClick = {
+                            responseCache.clearCache()
+                            Toast.makeText(context, "Cache cleared", Toast.LENGTH_SHORT).show()
+                        }) {
+                            Text("Clear")
+                        }
+                    }
+                }
             }
 
             Spacer(modifier = Modifier.height(12.dp))
